@@ -1,6 +1,6 @@
 # flasky-pro
 
-This is an api developed using Flask/restful with SQl-Alchemy to design scalable automation framework.
+This is an api developed using Flask/restful with SQL-Alchemy to design scalable automation framework.
 
 
 
