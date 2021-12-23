@@ -5,6 +5,7 @@ from flask_restful import Resource, Api
 items = []
 
 app = Flask(__name__)
+app.secret_key = 'jose'
 api = Api(app)
 
 
@@ -17,7 +18,6 @@ class Item(Resource):
     def post(self, name):
         if next(filter(lambda x: x['name']==name, items),None) is not None:
             return {'message': 'Item already exists'}, 422
-
         requests = request.get_json()
         data = {'name':name, 'price': requests['price'] }
         items.append(data)
