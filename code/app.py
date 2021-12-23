@@ -15,13 +15,13 @@ class ItemLists(Resource):
 
 class Item(Resource):
     def post(self, name):
+        if next(filter(lambda x: x['name']==name, items),None) is not None:
+            return {'message': 'Item already exists'}, 422
+
         requests = request.get_json()
         data = {'name':name, 'price': requests['price'] }
-        if data not in items:
-            items.append(data)
-            return data, 201
-        else:
-            return {'message': 'Item already exists'}, 422
+        items.append(data)
+        return data, 201
 
     def get(self, name):
         item = next(filter(lambda x: x['name'] == name, items), None)
