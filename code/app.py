@@ -17,15 +17,15 @@ class Item(Resource):
     def post(self, name):
         requests = request.get_json()
         data = {'name':name, 'price': requests['price'] }
-        items.append(data)
-        return data, 201
+        if data not in items:
+            items.append(data)
+            return data, 201
+        else:
+            return {'message': 'Item already exists'}, 422
 
     def get(self, name):
-        for item in items:
-            if item['name'] == name:
-                return item, 200
-        return {'item': None}, 404
-
+        item = next(filter(lambda x: x['name'] == name, items), None)
+        return {'items':item} , 200 if item is not None else 404
 
 api.add_resource(ItemLists, '/items')
 api.add_resource(Item, '/item/<string:name>')
