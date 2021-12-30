@@ -20,11 +20,17 @@ class ItemLists(Resource):
 
 
 class Item(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('price', type=float, required=True,
+                        help="This field cannot be left blank.")
+    parser.add_argument('name', type=str, required=True,
+                        help="This field cannot be left blank.")
+
     @jwt_required()
     def post(self, name):
         if next(filter(lambda x: x['name']==name, items),None) is not None:
             return {'message': 'Item already exists'}, 422
-        requests = request.get_json() # sents entire request payload
+        requests = Item.parser.parse_args() # replacing request.get_json() which sents entire payload
         data = {'name':name, 'price': requests['price'] }
         items.append(data)
         return data, 201
@@ -42,13 +48,8 @@ class Item(Resource):
 
     @jwt_required()
     def put(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument('price', type=float, required=True,
-                            help="This field cannot be left blank!")
-        parser.add_argument('name', type=str, required=True)
-
         item = next(filter(lambda x: x['name'] == name, items), None)
-        requests = parser.parse_args() # replacing request.get_json() which sents entire payload
+        requests = Item.parser.parse_args() # replacing request.get_json() which sents entire payload
         if item is not None:
             item.update(requests)
             return item, 200
