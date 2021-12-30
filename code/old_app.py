@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# This app is an old version without sql support
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
