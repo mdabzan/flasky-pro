@@ -4,6 +4,7 @@ from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 
 from security import authenticate, identity
+from user import UserRegister
 
 items = []
 
@@ -58,5 +59,6 @@ class Item(Resource):
 
 api.add_resource(ItemLists, '/items')
 api.add_resource(Item, '/item/<string:name>')
+api.add_resource(UserRegister, '/register')
 
 app.run(port=5002, debug=1)
