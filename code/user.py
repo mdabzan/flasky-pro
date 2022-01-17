@@ -59,3 +59,12 @@ class UserRegister(Resource):
         connection.close()
 
         return {'message' : 'User created successfully.' }, 201
+
+    def get(self):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+        query = "SELECT * FROM users"
+        result = cursor.execute(query)
+        row = result.fetchall()
+        connection.close()
+        return {'users':row}
